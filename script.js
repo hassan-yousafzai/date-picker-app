@@ -6,3 +6,9 @@ datePicker.classList.remove("show")
 datePickerButton.addEventListener("click", e => {
   datePicker.classList.add("show")
 })
+
+document.addEventListener("click", e => {
+  if (!e.target.matches("button")) return
+
+  console.log("button clicked")
+})
