@@ -10,7 +10,8 @@ import {
   endOfMonth,
   endOfWeek,
   getDate,
-  isSameMonth
+  isSameMonth,
+  isSameDay
 } from "date-fns"
 
 const datePicker = document.querySelector(".date-picker")
@@ -29,7 +30,7 @@ datePickerButton.addEventListener("click", e => {
 
   const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
   currentDate = selectedDate // show the current selectedDate when user opens datepicker
-  setupDatePicker()
+  setupDatePicker(currentDate)
 })
 
 nextMonthButton.addEventListener("click", e => {
@@ -60,6 +61,10 @@ function setupDates(selectedDate) {
     const dateElement = document.createElement("button")
     if (!isSameMonth(date, currentDate)) {
       dateElement.classList.add("date-picker-other-month-date")
+    }
+
+    if (isSameDay(date, selectedDate)) {
+      dateElement.classList.add("selected")
     }
 
     dateElement.classList.add("date")
