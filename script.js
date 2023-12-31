@@ -1,14 +1,26 @@
-import { format } from "date-fns"
-
-const today = new Date()
+import { format, fromUnixTime, getUnixTime } from "date-fns"
 
 const datePicker = document.querySelector(".date-picker")
 const datePickerButton = document.querySelector(".date-picker-button")
 const datePickerHeaderText = document.querySelector(".current-month")
 
-datePickerButton.innerText = format(today, "MMMM do, yyyy")
+setDate(new Date())
 
 datePickerButton.addEventListener("click", e => {
   datePicker.classList.toggle("show")
-  datePickerHeaderText.innerText = format(today, "MMMM - yyyy")
+
+  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
+
+  setupDatePicker(selectedDate)
 })
+
+function setDate(date) {
+  datePickerButton.innerText = format(date, "MMMM do, yyyy")
+  datePickerButton.dataset.selectedDate = getUnixTime(date)
+}
+
+function setupDatePicker(selectedDate) {
+  datePickerHeaderText.innerText = format(selectedDate, "MMMM - yyyy")
+
+  console.log(selectedDate)
+}
