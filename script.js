@@ -1,26 +1,27 @@
-import { format, fromUnixTime, getUnixTime, subMonths } from "date-fns"
+import {
+  addMonths,
+  format,
+  fromUnixTime,
+  getUnixTime,
+  subMonths
+} from "date-fns"
 
 const datePicker = document.querySelector(".date-picker")
 const datePickerButton = document.querySelector(".date-picker-button")
 const datePickerHeaderText = document.querySelector(".current-month")
-const prevMonthButton = document.querySelector(".prev-month-button")
+const previousMonthButton = document.querySelector(".prev-month-button")
+const nextMonthButton = document.querySelector(".next-month-button")
+
+let currentDate = new Date()
 
 setDate(new Date())
-
-prevMonthButton.addEventListener("click", e => {
-  console.log("prevMonthButton clicked")
-  const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
-
-  setDate(subMonths(selectedDate, 1))
-  setupDatePicker(subMonths(selectedDate, 1))
-})
 
 datePickerButton.addEventListener("click", e => {
   datePicker.classList.toggle("show")
 
   const selectedDate = fromUnixTime(datePickerButton.dataset.selectedDate)
-
-  setupDatePicker(selectedDate)
+  currentDate = selectedDate // show the current selectedDate when user opens datepicker
+  setupDatePicker()
 })
 
 function setDate(date) {
@@ -28,6 +29,16 @@ function setDate(date) {
   datePickerButton.dataset.selectedDate = getUnixTime(date)
 }
 
-function setupDatePicker(selectedDate) {
-  datePickerHeaderText.innerText = format(selectedDate, "MMMM - yyyy")
+function setupDatePicker() {
+  datePickerHeaderText.innerText = format(currentDate, "MMMM - yyyy")
 }
+
+nextMonthButton.addEventListener("click", e => {
+  currentDate = addMonths(currentDate, 1)
+  setupDatePicker()
+})
+
+previousMonthButton.addEventListener("click", e => {
+  currentDate = subMonths(currentDate, 1)
+  setupDatePicker()
+})
